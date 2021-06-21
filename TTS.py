@@ -6,9 +6,9 @@ Note: ssml must be well-formed according to:
 from google.cloud import texttospeech
 import random
 
-path = "/home/jake/workspace/2021/Opic/test/"
-
 # Instantiates a client
+from config import audio_path
+
 client = texttospeech.TextToSpeechClient()
 
 # Set the text input to be synthesized
@@ -46,7 +46,7 @@ def create_audio(title, question):
     )
 
     # The response's audio_content is binary.
-    with open(path + title + ".mp3", "wb") as out:
+    with open(audio_path + title + ".mp3", "wb") as out:
         # Write the response to the output file.
         out.write(response.audio_content)
         print("Audio content written to file " + title + ".mp3")
