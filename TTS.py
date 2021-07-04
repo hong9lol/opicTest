@@ -33,7 +33,7 @@ voices = [voice_man, voice_woman, voice_neutral]
 # Select the type of audio file you want returned
 audio_config = texttospeech.AudioConfig(
     audio_encoding=texttospeech.AudioEncoding.MP3,
-    speaking_rate=0.8
+    speaking_rate=0.9
 )
 
 
@@ -42,7 +42,8 @@ def create_audio(title, question):
     # voice parameters and audio file type
     synthesis_input = texttospeech.SynthesisInput(text=question)
     response = client.synthesize_speech(
-        input=synthesis_input, voice=voices[random.randrange(0, 3)], audio_config=audio_config
+        # input=synthesis_input, voice=voices[random.randrange(0, 3)], audio_config=audio_config
+        input=synthesis_input, voice=voice_woman, audio_config=audio_config
     )
 
     # The response's audio_content is binary.
