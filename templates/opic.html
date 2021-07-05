@@ -17,12 +17,21 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 </head>
 <body>
-<ul class="pager" style="text-align:right;padding-right: 3%">
-    <li><a href="/">처음으로</a></li>
-    <li><a onclick='showQuestion()' href="#">질문보기</a></li>
-    <li><a onclick='showHint()' href="#">힌트보기</a></li>
-    <li><a onclick='showAnswer()' href="#">대답보기기</a></li>
-</ul>
+<div>
+    <ul class="pager" style="text-align:right;padding-right: 3%">
+        <li><a href="/">처음으로</a></li>
+        <li><a onclick='showQuestion()' href="#">질문보기</a></li>
+        <li><a onclick='showHint()' href="#">힌트보기</a></li>
+        <li><a onclick='showAnswer()' href="#">대답보기기</a>
+
+            <select id="question-type" class="form-control" onchange="setQuestionType(value)" name="question_types"
+                    style="width: auto; display: inline;">
+                <option value="survey" selected>서베이 문제</option>
+                <option value="non-survey">돌발 문제</option>
+                <option value="role-play">롤플레이</option>
+            </select>
+    </ul>
+</div>
 
 <div class="text-center mb-4">
     <h3 id="title">자기소개</h3>
@@ -52,7 +61,7 @@
         </div>
 
         <div class="text-center col-md-2">
-            <img src="http://shorturl.at/cfFTY" alt="Can't find the image"/>
+            <img src="../static/resource/eva.jpeg" alt="Can't find the image"/>
 
             <div>
                 <ul class="pager">
@@ -75,13 +84,16 @@
 <script type="text/javascript">
     let audio = null;
 
-    function nextQuestion() {
+    function init() {
         if (audio != null) audio.pause();
 
         document.getElementById("question").style.visibility = "hidden"
         document.getElementById("hint").style.visibility = "hidden"
         document.getElementById("answer").style.visibility = "hidden"
+    }
 
+    function nextQuestion() {
+        init();
         $.ajax({
             url: "/next",
             type: "GET",
@@ -127,6 +139,22 @@
 
     function showAnswer() {
         document.getElementById("answer").style.visibility = "visible"
+    }
+
+    function setQuestionType(value) {
+        init();
+        $.ajax({
+            url: "/question/type",
+            type: "POST",
+            data: {
+                questionType: value
+            },
+            dataType: 'JSON',
+            success: function (result) {
+                nextQuestion();
+                console.log(result)
+            }
+        });
     }
 </script>
 </body>
